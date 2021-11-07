@@ -1,0 +1,38 @@
+version: '3.8'
+
+# Docker Networks
+networks:
+  global-dois-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  dbdata:
+    driver: local
+
+# Workflow
+services:
+  mysql:
+    image: mysql:5.7.29
+    container_name: global-solutions-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: system
+      MYSQL_USER: usuario_global
+      MYSQL_PASSWORD: "jwk0dHu&"
+      MYSQL_ROOT_PASSWORD: "jwk0dHu&1"
+    volumes:
+      - ./mysql:/var/lib/mysql/
+    networks:
+      - global-dois-network
+
+  adminer:
+    image: adminer
+    container_name: global-solutions-adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - global-dois-network
